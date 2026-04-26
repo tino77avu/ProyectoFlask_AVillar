@@ -7,7 +7,9 @@ MAX_INTENTOS = 3
 
 @app.route("/")
 def inicio():
-    intentos = session.get("intentos_fallidos", 0)
+    # Reinicia los intentos cada vez que se vuelve a cargar la pantalla de login.
+    session["intentos_fallidos"] = 0
+    intentos = 0
     bloqueado = intentos >= MAX_INTENTOS
     return render_template(
         "login.html",
