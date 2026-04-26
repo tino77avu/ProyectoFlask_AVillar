@@ -7,37 +7,73 @@
     <style>
         body{
             font-family: Arial, sans-serif;
-            background: #f2f2f2;
+            background: linear-gradient(135deg, #7f5af0 0%, #2cb67d 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .contenedor{
             width: 320px;
-            margin: 100px auto;
-            background: white;
+            background: #ffffff;
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
         }
         h2{
             text-align: center;
+            color: #1f2937;
+            margin-top: 0;
         }
         input{
             width: 100%;
             padding: 10px;
             margin: 8px 0;
             box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus{
+            border-color: #7f5af0;
+            box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.15);
         }
         button{
             width: 100%;
             padding: 10px;
-            background: #007bff;
+            background: #7f5af0;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        button:hover:enabled{
+            background: #6546cc;
+        }
+        button:disabled{
+            background: #9ca3af;
+            cursor: not-allowed;
         }
         .mensaje{
-            color: red;
             text-align: center;
             margin-top: 10px;
+            min-height: 22px;
+            font-weight: 600;
+        }
+        .mensaje.error{
+            color: #dc2626;
+        }
+        .mensaje.ok{
+            color: #15803d;
+        }
+        .estado{
+            margin-top: 8px;
+            text-align: center;
+            color: #374151;
+            font-size: 0.92rem;
         }
     </style>
 </head>
@@ -47,9 +83,10 @@
         <form action="/login" method="post">
             <input type="text" name="usuario" placeholder="Usuario" required>
             <input type="password" name="clave" placeholder="Contraseña" required>
-            <button type="submit">Ingresar</button>
+            <button type="submit" {% if bloqueado %}disabled{% endif %}>Acceder</button>
         </form>
-        <div class="mensaje">{{ mensaje }}</div>
+        <div class="estado">Intentos fallidos: {{ intentos }} / {{ max_intentos }}</div>
+        <div class="mensaje {% if bloqueado or mensaje %}error{% else %}ok{% endif %}">{{ mensaje }}</div>
     </div>
 </body>
 </html>
